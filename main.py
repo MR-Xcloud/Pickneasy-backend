@@ -11,6 +11,7 @@ from pinecone import Pinecone
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.messages import HumanMessage
+from fastapi.middleware.cors import CORSMiddleware
 
 # -------------------------------------------------
 # ENV & INIT
@@ -25,6 +26,15 @@ QA_INDEX_NAME = "pickneasy"
 WEB_INDEX_NAME = "pickneasy-wb"
 
 app = FastAPI(title="PicknEasy Chatbot API (Pinecone)")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or restrict to pickneasy.com later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 embeddings = OpenAIEmbeddings()
 llm = ChatOpenAI(temperature=0)
